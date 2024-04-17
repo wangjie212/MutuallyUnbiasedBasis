@@ -180,20 +180,4 @@ for i1 = 1:d, i2 = 1:d, j1 = 1:n-1, j2 = 1:n-1
     end
 end
 
-k = 1
-cons = Vector{Polynomial{true, Float64}}(undef, 540)
-for i1 = 1:d, i2 = 1:d, j = 1:n-1
-    cons[k] = sum(x[i1,j,k,1]*x[i2,j,k,1]-x[i1,j,k,2]*x[i2,j,k,2] for k = 1:d)
-    if i1 == i2
-        cons[k] -= 1
-    end
-    cons[k+1] = sum(x[i1,j,k,1]*x[i2,j,k,2]+x[i1,j,k,1]*x[i2,j,k,2] for k = 1:d)
-    cons[k+2] = x[i1,j,i2,1]^2 + x[i1,j,i2,2]^2 - 1/6
-    k += 3
-end
-for i1 = 1:d, i2 = 1:d, j1 = 1:n-1, j2 = 1:n-1
-    if j1 != j2
-        cons[k] = sum(x[i1,j1,k,1]*x[i2,j2,k,1]-x[i1,j1,k,2]*x[i2,j2,k,2] for k = 1:d)^2 + sum(x[i1,j1,k,1]*x[i2,j2,k,2]+x[i1,j1,k,1]*x[i2,j2,k,2] for k = 1:d)^2 - 1/6
-        k += 1
-    end
-end
+nbasis = [polys_info(item, vec(x)) for item in basis]
